@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>汇报时钟 · Report Clock</title>
+    <meta
+      name="description"
+      content="汇报倒计时：时间到强制提示，适合会议投屏。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <main class="stage" id="stage">
+      <header class="brand">
+        <p class="brand-mark">Report Clock</p>
+        <h1 class="brand-title">汇报时钟</h1>
+      </header>
+
+      <section class="timer-panel" aria-live="polite">
+        <p class="speaker-label" id="speakerLabel">下一位汇报</p>
+        <p class="speaker-name" id="speakerName">准备开始</p>
+
+        <div class="clock-wrap">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-track" cx="60" cy="60" r="54" />
+            <circle class="ring-progress" id="ringProgress" cx="60" cy="60" r="54" />
+          </svg>
+          <div class="clock-face">
+            <time class="digits" id="digits" datetime="PT0S">05:00</time>
+            <p class="status" id="statusText">待命</p>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button type="button" class="btn btn-primary" id="btnStart">开始</button>
+          <button type="button" class="btn" id="btnPause" disabled>暂停</button>
+          <button type="button" class="btn" id="btnReset">重置</button>
+          <button type="button" class="btn" id="btnFullscreen" title="全屏投屏">全屏</button>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="block">
+          <h2>时长</h2>
+          <div class="presets" id="presets" role="group" aria-label="预设时长">
+            <button type="button" class="chip" data-seconds="180">3 分</button>
+            <button type="button" class="chip is-active" data-seconds="300">5 分</button>
+            <button type="button" class="chip" data-seconds="480">8 分</button>
+            <button type="button" class="chip" data-seconds="600">10 分</button>
+            <button type="button" class="chip" data-seconds="900">15 分</button>
+          </div>
+          <label class="custom-time">
+            <span>自定义（分:秒）</span>
+            <input
+              id="customTime"
+              type="text"
+              inputmode="numeric"
+              placeholder="5:00"
+              maxlength="5"
+              autocomplete="off"
+            />
+          </label>
+        </section>
+
+        <section class="block">
+          <h2>汇报队列</h2>
+          <form class="queue-form" id="queueForm">
+            <input
+              id="queueInput"
+              type="text"
+              placeholder="输入姓名后回车"
+              maxlength="24"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn btn-small">加入</button>
+          </form>
+          <ul class="queue-list" id="queueList"></ul>
+          <p class="hint">时间到后点「下一位」自动切换；也可拖到名字上点选。</p>
+        </section>
+
+        <section class="block options">
+          <label class="check">
+            <input type="checkbox" id="optSound" checked />
+            <span>到时提示音</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="optWarn" checked />
+            <span>还剩 1 分钟变色提醒</span>
+          </label>
+        </section>
+      </aside>
+    </main>
+
+    <div class="overlay" id="timeUpOverlay" hidden>
+      <div class="overlay-card">
+        <p class="overlay-kicker">时间到</p>
+        <p class="overlay-name" id="overlayName">汇报结束</p>
+        <p class="overlay-msg">请收尾，把时间留给下一位。</p>
+        <div class="overlay-actions">
+          <button type="button" class="btn btn-primary" id="btnNext">下一位</button>
+          <button type="button" class="btn" id="btnDismiss">继续本轮 / Esc</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
