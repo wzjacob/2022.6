@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ARM64 应用大全 · Linux aarch64</title>
+    <meta
+      name="description"
+      content="Linux ARM64（aarch64）可装可用应用目录：开发工具、浏览器、办公、容器与运行时。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="grid-trace"></div>
+    </div>
+
+    <header class="topbar">
+      <a class="brand-mark" href="#top" aria-label="回到顶部">
+        <span class="brand-chip" aria-hidden="true"></span>
+        <span class="brand-text">ARM64 应用大全</span>
+      </a>
+      <nav class="top-nav">
+        <a href="#catalog">浏览目录</a>
+        <a href="#how">如何选用</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="brand-hero">ARM64 应用大全</p>
+        <h1 id="hero-title">给 Linux aarch64 的精选应用地图</h1>
+        <p class="hero-lead">
+          覆盖开发、浏览器、办公、容器与运行时——标明官方、社区与实验支持，帮你在 ARM 机器上少踩坑。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#catalog">浏览应用</a>
+          <a class="btn btn-ghost" href="#how">安装提示</a>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="silicon-plane">
+            <span class="trace t1"></span>
+            <span class="trace t2"></span>
+            <span class="trace t3"></span>
+            <span class="die">aarch64</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="catalog" class="catalog" aria-labelledby="catalog-title">
+        <div class="section-head">
+          <h2 id="catalog-title">应用目录</h2>
+          <p>按分类筛选，或直接搜索名称与安装方式。</p>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-field">
+            <span class="sr-only">搜索应用</span>
+            <input
+              id="search"
+              type="search"
+              placeholder="搜索：VS Code、Docker、Firefox…"
+              autocomplete="off"
+            />
+          </label>
+          <p class="result-meta" id="result-meta" aria-live="polite"></p>
+        </div>
+
+        <div class="filters" id="filters" role="tablist" aria-label="应用分类"></div>
+        <div class="app-list" id="app-list"></div>
+      </section>
+
+      <section id="how" class="how" aria-labelledby="how-title">
+        <div class="section-head">
+          <h2 id="how-title">如何选用</h2>
+          <p>在 ARM64 Linux 上优先官方构建，其次 Flatpak / 发行版仓库，再考虑社区与转译。</p>
+        </div>
+        <ol class="how-steps">
+          <li>
+            <strong>核对架构</strong>
+            <span>确认包名含 <code>arm64</code> / <code>aarch64</code>，避免误下 amd64。</span>
+          </li>
+          <li>
+            <strong>优先官方渠道</strong>
+            <span>厂商 .deb/.rpm、官方 tarball，或发行版主仓库。</span>
+          </li>
+          <li>
+            <strong>桌面应用可试 Flatpak</strong>
+            <span>Flathub 对 aarch64 覆盖面广，依赖冲突更少。</span>
+          </li>
+          <li>
+            <strong>缺原生时再用转译</strong>
+            <span>Box64 等可应急运行 x86_64，但性能与兼容性因应用而异。</span>
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        <strong>ARM64 应用大全</strong>
+        · 静态清单，信息供参考；安装前请以各项目官网为准。
+      </p>
+      <p class="footer-note">可直接打开本页，或在目录下执行 <code>npx serve .</code></p>
+    </footer>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
