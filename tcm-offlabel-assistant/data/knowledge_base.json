@@ -1,0 +1,247 @@
+{
+  "version": "0.1.0",
+  "updated_at": "2026-08-12",
+  "disclaimer": "本知识库内容仅供学习与科研参考，不构成诊疗建议。超说明书用药须在执业医师/药师指导下进行，请遵医嘱。",
+  "evidence_levels": {
+    "A": "研究院正式药效学研究 / 发明专利 / 获批新适应症",
+    "B": "同行评议临床研究 / 系统综述 / 临床观察文献",
+    "C": "权威媒体或药监科普整理的临床经验总结",
+    "D": "民间报道 / 网传偏方（仅作线索，证据不足）"
+  },
+  "entries": [
+    {
+      "id": "nhqx-001",
+      "drug": "牛黄清心丸",
+      "aliases": ["同仁牛黄清心丸", "牛黄清心"],
+      "otc": true,
+      "manufacturer_note": "同仁堂品种；不同厂家组方略有差异，请以实际说明书为准",
+      "standard_indication": "清热解毒，镇惊安神。用于风痰阻窍所致的头晕目眩、痰涎壅盛、神志混乱、言语不清及惊风抽搐、癫痫。",
+      "offlabel_use": "解酒、酒精性脑损伤保护",
+      "syndrome": "心脑同治；痰热扰神、酒毒上扰相关场景的探索性应用",
+      "dosage_note": "请按说明书用量，或遵医嘱；不可替代急性酒精中毒急救",
+      "evidence_level": "A",
+      "evidence_source": "同仁堂研究院药效学研究：解酒、酒精性脑损伤、轻度认知障碍干预；发明专利「药物组合物在制备预防或治疗酒精性脑损伤药物中的应用」(CN202410376379.X)",
+      "source_urls": [
+        "https://www.dskoubei.com/article/view/id/45729.html",
+        "http://stock.stockstar.com/RB2026070100004695.shtml"
+      ],
+      "precautions": [
+        "本品为处方/管控较严的经典中成药，部分规格需在医师指导下使用",
+        "不替代急性醉酒急救、洗胃、补液等医疗措施",
+        "孕妇、肝肾功能不全者慎用或遵医嘱",
+        "勿与酒后「硬扛」混淆：出现意识障碍、呕吐误吸风险时应立即就医"
+      ],
+      "symptoms": ["解酒", "喝酒伤脑", "酒精性脑损伤", "应酬护脑", "轻度认知障碍", "酒后头晕"],
+      "tags": ["解酒", "神经保护", "同仁堂研究院", "专利"]
+    },
+    {
+      "id": "nhqx-002",
+      "drug": "牛黄清心丸",
+      "aliases": ["同仁牛黄清心丸"],
+      "otc": true,
+      "manufacturer_note": "同仁堂品种",
+      "standard_indication": "清热解毒，镇惊安神。用于风痰阻窍所致头晕目眩、神志混乱等。",
+      "offlabel_use": "轻度认知障碍 / 血管性认知障碍相关探索",
+      "syndrome": "痰热扰神、清窍不利；与心脑同治理论相关",
+      "dosage_note": "动物与机制研究阶段为主，人体应用须遵专科医师意见",
+      "evidence_level": "B",
+      "evidence_source": "同仁牛黄清心丸对血管性认知障碍大鼠学习记忆能力影响及机制研究；NLRP3/Caspase-1/IL-1β 通路相关文献",
+      "source_urls": [
+        "https://www.tiprpress.com/xdywlc/article/abstract/20250301?st=article_issue"
+      ],
+      "precautions": [
+        "目前以药效学与动物模型证据为主，不可据此自行长期用药",
+        "认知障碍需神经内科/中医专科评估，排除可逆病因"
+      ],
+      "symptoms": ["记忆力下降", "轻度认知障碍", "血管性认知障碍", "健忘"],
+      "tags": ["认知", "机制研究"]
+    },
+    {
+      "id": "wjbf-001",
+      "drug": "乌鸡白凤丸",
+      "aliases": ["同仁乌鸡白凤丸", "乌鸡白凤"],
+      "otc": true,
+      "manufacturer_note": "同仁堂经典妇科药；研究院在代谢病领域有探索性研究",
+      "standard_indication": "补气养血，调经止带。用于气血两虚，身体瘦弱，腰膝酸软，月经不调，崩漏带下。",
+      "offlabel_use": "高尿酸血症 / 痛风相关探索（非获批适应症）",
+      "syndrome": "脾肾亏虚、肾阳不足兼湿热困脾者更常被讨论；非所有痛风证型适用",
+      "dosage_note": "文献中有「一次6g，一日2次，疗程约1个月」的观察用法，仅供参考，须遵医嘱",
+      "evidence_level": "B",
+      "evidence_source": "同仁堂研究院探索性研究（痛风/高尿酸血症领域）；《贵阳中医学院学报》乌鸡白凤丸治疗无症状高尿酸血症临床观察；大众媒体与专家点评并存争议",
+      "source_urls": [
+        "https://www.dskoubei.com/article/view/id/45729.html",
+        "https://qingdao.dzwww.com/jiankang/zy/201711/t20171106_16243149.htm",
+        "http://health.people.cn/n1/2018/0108/c14739-29751247.html"
+      ],
+      "precautions": [
+        "说明书无痛风适应症；多家媒体与专家明确提醒「不能当痛风特效药」",
+        "急性痛风发作期湿热痰瘀痹阻者，补益固涩药可能不适，需辨证",
+        "不可替代降尿酸西药及饮食管理；出现关节红肿热痛应就医",
+        "证据等级：有临床观察与研究院探索，但尚无充分高质量共识"
+      ],
+      "symptoms": ["尿酸高", "高尿酸血症", "痛风", "无症状高尿酸", "腰酸畏寒"],
+      "tags": ["代谢", "争议用途", "需辨证"]
+    },
+    {
+      "id": "wjbf-002",
+      "drug": "乌鸡白凤丸",
+      "aliases": ["同仁乌鸡白凤丸"],
+      "otc": true,
+      "manufacturer_note": "同仁堂品种",
+      "standard_indication": "补气养血，调经止带。",
+      "offlabel_use": "酒精性肝损伤、非酒精性脂肪肝相关探索",
+      "syndrome": "肝血不足、脾肾亏虚兼肝损伤场景的探索性应用",
+      "dosage_note": "探索性研究阶段，须专科医师评估",
+      "evidence_level": "A",
+      "evidence_source": "同仁堂研究院：同仁乌鸡白凤丸在酒精性肝损伤、非酒精性脂肪肝炎治疗领域的探索性研究",
+      "source_urls": [
+        "https://www.dskoubei.com/article/view/id/45729.html"
+      ],
+      "precautions": [
+        "不替代戒酒、保肝正规治疗与影像/生化随访",
+        "脂肪肝病因复杂，需综合干预体重、代谢综合征"
+      ],
+      "symptoms": ["酒精肝", "脂肪肝", "肝损伤", "应酬伤肝", "应酬", "护肝", "保肝", "非酒精性脂肪肝"],
+      "tags": ["保肝", "同仁堂研究院", "应酬"]
+    },
+    {
+      "id": "lwdh-001",
+      "drug": "六味地黄丸",
+      "aliases": ["六味地黄", "六味地黄制剂"],
+      "otc": true,
+      "manufacturer_note": "多厂家；国家药监局已统一修订说明书不良反应项",
+      "standard_indication": "滋阴补肾。用于肾阴亏损，头晕耳鸣，腰膝酸软，骨蒸潮热，盗汗遗精，消渴。",
+      "offlabel_use": "辅助2型糖尿病、糖尿病肾病等代谢/肾脏相关探索",
+      "syndrome": "仅适用于肾阴虚证；肾阳虚（畏寒肢冷、大便溏稀）不宜",
+      "dosage_note": "常作辅助，不可自行停用降糖/降压西药；疗程与剂量遵医嘱",
+      "evidence_level": "B",
+      "evidence_source": "老药新用综述与临床研究报道：糖尿病、糖尿病肾病、高血压肾病辅助等；国家药监局说明书修订公告",
+      "source_urls": [
+        "https://www.drwhich.net/2021/08/14/1474/",
+        "https://news.seu.edu.cn/2021/0225/c5541a361500/page.htm"
+      ],
+      "precautions": [
+        "辨证错误（阳虚误用）可能加重病情",
+        "滋腻碍胃，可致腹胀、腹泻、食欲不振等",
+        "监测数据显示多种不良反应，长期服用需药师/医师随访"
+      ],
+      "symptoms": ["糖尿病辅助", "糖尿病肾病", "腰膝酸软", "盗汗", "口干", "肾阴虚"],
+      "tags": ["滋阴", "代谢", "辨证关键"]
+    },
+    {
+      "id": "lwdh-002",
+      "drug": "六味地黄丸",
+      "aliases": ["六味地黄"],
+      "otc": true,
+      "manufacturer_note": "多厂家",
+      "standard_indication": "滋阴补肾。",
+      "offlabel_use": "更年期潮热盗汗、绝经后骨质疏松等辅助探索",
+      "syndrome": "肾阴虚型更年期相关表现",
+      "dosage_note": "辅助手段，不可替代正规抗骨质疏松或激素评估",
+      "evidence_level": "C",
+      "evidence_source": "临床经验与老药新用整理文章；需结合专科评估",
+      "source_urls": [
+        "https://formulawave.com/liuwei-dihuang-wane-benefits-side-effects/"
+      ],
+      "precautions": [
+        "更年期症状需排除甲状腺等其他病因",
+        "骨质疏松应保证钙与维生素D及专科治疗"
+      ],
+      "symptoms": ["更年期", "潮热", "盗汗", "骨质疏松", "绝经后"],
+      "tags": ["妇科相关", "抗衰老探索"]
+    },
+    {
+      "id": "xyw-001",
+      "drug": "逍遥丸",
+      "aliases": ["逍遥散", "加味逍遥丸"],
+      "otc": true,
+      "manufacturer_note": "加味逍遥丸含丹皮栀子，偏肝郁化火，与逍遥丸有别",
+      "standard_indication": "疏肝健脾，养血调经。用于肝郁脾虚所致郁闷不舒、胸胁胀痛、头晕目眩、食欲减退、月经不调。",
+      "offlabel_use": "抑郁障碍、脑卒中后抑郁等辅助探索",
+      "syndrome": "肝郁脾虚；肝郁化火者多用加味逍遥类",
+      "dosage_note": "常联合抗抑郁药研究，不可自行替代精神科用药",
+      "evidence_level": "B",
+      "evidence_source": "中国食品药品网《疏肝解郁「逍遥丸」的新用途》；脑卒中后抑郁、血管性痴呆伴抑郁等临床研究报道",
+      "source_urls": [
+        "http://m.cnpharm.com/c/2021-05-26/790616.shtml"
+      ],
+      "precautions": [
+        "严重抑郁、自杀风险须精神科急诊处理",
+        "服药期间忌生气恼怒、生冷油腻",
+        "与西药联用须告知医师"
+      ],
+      "symptoms": ["抑郁", "郁闷", "卒中后抑郁", "情绪低落", "胸胁胀痛", "肝郁"],
+      "tags": ["情志", "疏肝"]
+    },
+    {
+      "id": "xyw-002",
+      "drug": "逍遥丸",
+      "aliases": ["加味逍遥散"],
+      "otc": true,
+      "manufacturer_note": "乳腺相关多用加味或辨证加减",
+      "standard_indication": "疏肝健脾，养血调经。",
+      "offlabel_use": "乳腺小叶增生、偏头痛、中心性浆液性视网膜病变等临床新用报道",
+      "syndrome": "肝郁气滞、肝郁血虚相关",
+      "dosage_note": "文献报道剂量因剂型而异，须遵医嘱；乳腺肿块需影像排查恶性",
+      "evidence_level": "C",
+      "evidence_source": "中国食品药品网临床新用途整理；属临床经验与个案/小样本报道层面",
+      "source_urls": [
+        "http://m.cnpharm.com/c/2021-05-26/790616.shtml"
+      ],
+      "precautions": [
+        "乳房肿块、视力骤降、剧烈头痛应先排查器质性疾病",
+        "证据多为经验总结，个体差异大"
+      ],
+      "symptoms": ["乳腺增生", "偏头痛", "视力模糊", "月经不调", "肝郁气滞"],
+      "tags": ["妇科", "眼科探索", "头痛"]
+    },
+    {
+      "id": "hxzh-001",
+      "drug": "藿香正气水",
+      "aliases": ["藿香正气液", "藿香正气胶囊"],
+      "otc": true,
+      "manufacturer_note": "水剂含较高乙醇；胶囊/软胶囊乙醇问题不同，请区分剂型",
+      "standard_indication": "解表化湿，理气和中。用于外感风寒、内伤湿滞或夏伤暑湿所致头痛昏重、胸膈痞闷、脘腹胀痛、呕吐泄泻。",
+      "offlabel_use": "外用辅助蚊虫叮咬止痒；部分经验用于轻度湿疹/痱子（有争议）",
+      "syndrome": "外感寒湿、暑湿；皮肤外用属经验用法",
+      "dosage_note": "外用：适量涂擦完整皮肤；破损处不宜。口服按说明书",
+      "evidence_level": "C",
+      "evidence_source": "基层用药指南与药学科普整理；《中医外治杂志》等有湿敷辅助亚急性湿疹报道；辟谣平台提醒不可滥用",
+      "source_urls": [
+        "http://www.lyls.gov.cn/info/3353/148127.htm",
+        "https://www.psmchina.cn/safe_medicines_information/safe_medicines_knowledge/jbcs/10890",
+        "https://piyao.kepuchina.cn/h5/rumordetail?id=jzok"
+      ],
+      "precautions": [
+        "水剂乙醇约40%–50%，对酒精过敏者禁用；外用刺激性强",
+        "禁止与头孢类等药物同服（双硫仑样反应风险）",
+        "服药后不宜立即驾驶；儿童、孕妇慎用或禁用（视剂型与医嘱）",
+        "湿疹渗出、破溃面不建议外涂；不能替代正规皮肤科治疗"
+      ],
+      "symptoms": ["蚊虫叮咬", "痱子", "轻度湿疹", "皮肤瘙痒", "胃肠型感冒", "恶心呕吐"],
+      "tags": ["外用经验", "含醇", "夏季常用"]
+    },
+    {
+      "id": "hxzh-002",
+      "drug": "藿香正气水",
+      "aliases": ["藿香正气"],
+      "otc": true,
+      "manufacturer_note": "注意剂型差异",
+      "standard_indication": "解表化湿，理气和中。",
+      "offlabel_use": "晕车晕船引起的恶心呕吐辅助",
+      "syndrome": "湿浊中阻、胃气上逆相关经验用法",
+      "dosage_note": "按说明书或出行前遵药师建议；上消化道出血等禁用场景需排除",
+      "evidence_level": "C",
+      "evidence_source": "科普中国等权威科普平台提及适用于晕车晕船恶心呕吐的经验场景",
+      "source_urls": [
+        "https://piyao.kepuchina.cn/h5/rumordetail?id=jzok"
+      ],
+      "precautions": [
+        "含醇剂型注意驾驶与酒精过敏",
+        "三岁以下儿童等特殊人群不建议使用"
+      ],
+      "symptoms": ["晕车", "晕船", "恶心", "呕吐"],
+      "tags": ["出行", "胃肠"]
+    }
+  ]
+}

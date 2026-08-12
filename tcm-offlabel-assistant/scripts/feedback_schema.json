@@ -1,0 +1,11 @@
+{
+  "feedback_id": "fb-001",
+  "created_at": "2026-08-12T00:00:00Z",
+  "query": "用户原问题",
+  "answer_ids": ["nhqx-001"],
+  "rating": "wrong|partial|good",
+  "user_note": "哪里不对 / 缺什么",
+  "suggested_correction": "可选：更正后的要点",
+  "review_status": "pending|accepted|rejected",
+  "promote_to_seed": false
+}

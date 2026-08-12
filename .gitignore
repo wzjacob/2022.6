@@ -111,3 +111,9 @@ temp/
 # End of https://www.gitignore.io/api/node
 
 .DS_Store
+
+# Python (tcm-offlabel-assistant)
+.venv/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
