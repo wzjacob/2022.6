@@ -14,6 +14,7 @@ import json
 import re
 import sys
 import time
+from collections import Counter
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -375,6 +376,9 @@ def main() -> int:
     else:
         products = scrape_details(items, args.category_id, category_name, args.workers)
 
+    def coverage(field: str) -> int:
+        return sum(1 for product in products if product.get(field))
+
     catalog = {
         "source": f"{BASE}/jtProductList/{args.category_id}/1.html",
         "site": BASE,
@@ -384,9 +388,34 @@ def main() -> int:
         "category_id": args.category_id,
         "total_pages": total_pages,
         "product_count": len(products),
+        "unique_product_names": len({product["name"] for product in products}),
         "scraped_at": now_iso(),
         "started_at": started,
         "list_only": bool(args.list_only),
+        "field_coverage": {
+            field: coverage(field)
+            for field in [
+                "name",
+                "specification",
+                "dosage_form",
+                "marketing_authorization_holder",
+                "indications",
+                "manufacturer",
+                "production_address",
+                "images",
+                "brand_logos",
+            ]
+        },
+        "top_manufacturers": [
+            {"name": name, "count": count}
+            for name, count in Counter(product.get("manufacturer", "") for product in products).most_common(10)
+            if name
+        ],
+        "dosage_forms": [
+            {"name": name, "count": count}
+            for name, count in Counter(product.get("dosage_form", "") for product in products).most_common()
+            if name
+        ],
     }
     write_outputs(out_dir, catalog, products)
     print(f"wrote {len(products)} products to {out_dir}", flush=True)
