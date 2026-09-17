@@ -19,9 +19,10 @@ import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
-from urllib.parse import urljoin
+from urllib.parse import unquote, urljoin, urlparse
 
 BASE = "https://www.tongrentang.com"
 DEFAULT_CATEGORY_ID = "d502e93816624e6780a8e959701ec3af"
@@ -79,10 +80,13 @@ KNOWN_OUTPUT_FIELDS = [
     "storage",
     "title",
     "list_image",
+    "list_image_local",
     "detail_url",
     "list_page",
     "images",
+    "images_local",
     "brand_logos",
+    "brand_logos_local",
     "attributes",
     "extra_attributes",
 ]
@@ -104,6 +108,34 @@ def fetch(url: str, retries: int = 5, timeout: int = 30) -> str:
             last_error = exc
             time.sleep(min(2 ** attempt, 16))
     raise RuntimeError(f"failed to fetch {url}: {last_error}") from last_error
+
+
+def fetch_bytes(url: str, retries: int = 5, timeout: int = 90) -> tuple[bytes, str]:
+    last_error: Exception | None = None
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                content_type = (response.headers.get_content_type() or "").lower()
+                data = response.read()
+                return data, content_type
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            last_error = exc
+            time.sleep(min(2 ** attempt, 16))
+    raise RuntimeError(f"failed to download {url}: {last_error}") from last_error
+
+
+def url_to_image_relpath(url: str) -> str:
+    parsed = urlparse(url)
+    path = unquote(parsed.path).lstrip("/")
+    if not path:
+        digest = sha256(url.encode("utf-8")).hexdigest()[:16]
+        path = f"misc/{digest}"
+    if parsed.query:
+        digest = sha256(parsed.query.encode("utf-8")).hexdigest()[:8]
+        suffix = Path(path).suffix
+        path = f"{path[: -len(suffix)] if suffix else path}_{digest}{suffix}"
+    return path
 
 
 def unescape_text(value: str) -> str:
@@ -284,6 +316,83 @@ def scrape_details(items: list[dict[str, Any]], category_id: str, category_name:
     return products
 
 
+def collect_image_urls(products: list[dict[str, Any]]) -> list[str]:
+    urls: list[str] = []
+    seen: set[str] = set()
+    for product in products:
+        candidates = [product.get("list_image"), *(product.get("images") or []), *(product.get("brand_logos") or [])]
+        for url in candidates:
+            if not url or url in seen:
+                continue
+            seen.add(url)
+            urls.append(url)
+    return urls
+
+
+def download_images(urls: list[str], images_dir: Path, workers: int) -> dict[str, dict[str, Any]]:
+    images_dir.mkdir(parents=True, exist_ok=True)
+    mapping: dict[str, dict[str, Any]] = {}
+
+    def save(url: str) -> dict[str, Any]:
+        relpath = url_to_image_relpath(url)
+        dest = images_dir / relpath
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        if dest.exists() and dest.stat().st_size > 0:
+            data = dest.read_bytes()
+            return {
+                "url": url,
+                "local_path": f"images/{relpath}",
+                "bytes": dest.stat().st_size,
+                "sha256": sha256(data).hexdigest(),
+                "status": "exists",
+            }
+        data, content_type = fetch_bytes(url)
+        if not data:
+            raise RuntimeError("empty response")
+        if content_type and not content_type.startswith("image/") and not content_type.startswith("application/octet-stream"):
+            raise RuntimeError(f"unexpected content-type {content_type}")
+        dest.write_bytes(data)
+        return {
+            "url": url,
+            "local_path": f"images/{relpath}",
+            "bytes": len(data),
+            "sha256": sha256(data).hexdigest(),
+            "content_type": content_type,
+            "status": "ok",
+        }
+
+    completed = 0
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(save, url): url for url in urls}
+        for future in as_completed(futures):
+            url = futures[future]
+            completed += 1
+            try:
+                mapping[url] = future.result()
+            except Exception as exc:  # noqa: BLE001
+                mapping[url] = {
+                    "url": url,
+                    "local_path": None,
+                    "status": "error",
+                    "error": str(exc),
+                }
+            if completed % 25 == 0 or completed == len(urls):
+                print(f"images {completed}/{len(urls)}", flush=True)
+    return mapping
+
+
+def attach_local_images(products: list[dict[str, Any]], mapping: dict[str, dict[str, Any]]) -> None:
+    def local_of(url: str | None) -> str | None:
+        if not url:
+            return None
+        return mapping.get(url, {}).get("local_path")
+
+    for product in products:
+        product["list_image_local"] = local_of(product.get("list_image"))
+        product["images_local"] = [path for path in (local_of(url) for url in product.get("images") or []) if path]
+        product["brand_logos_local"] = [path for path in (local_of(url) for url in product.get("brand_logos") or []) if path]
+
+
 def write_outputs(out_dir: Path, catalog: dict[str, Any], products: list[dict[str, Any]]) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -340,10 +449,13 @@ def write_outputs(out_dir: Path, catalog: dict[str, Any], products: list[dict[st
             "production_address": {"type": "string", "description": "生产地址"},
             "health_function": {"type": "string", "description": "保健功能"},
             "list_image": {"type": "string", "format": "uri"},
+            "list_image_local": {"type": ["string", "null"], "description": "相对 data/tongrentang 的本地封面图路径"},
             "detail_url": {"type": "string", "format": "uri"},
             "list_page": {"type": "integer"},
             "images": {"type": "array", "items": {"type": "string", "format": "uri"}},
+            "images_local": {"type": "array", "items": {"type": "string"}, "description": "详情图本地路径"},
             "brand_logos": {"type": "array", "items": {"type": "string", "format": "uri"}},
+            "brand_logos_local": {"type": "array", "items": {"type": "string"}, "description": "商标图本地路径"},
             "attributes": {"type": "object", "additionalProperties": {"type": "string"}, "description": "详情页原始键值"},
             "extra_attributes": {"type": "object", "additionalProperties": {"type": "string"}, "description": "未映射到标准字段的属性"},
         },
@@ -357,25 +469,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--out-dir", default="data/tongrentang")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--list-only", action="store_true", help="only crawl listing pages")
+    parser.add_argument("--from-json", help="reuse an existing products.json and skip HTML crawl")
+    parser.add_argument("--download-images", action="store_true", help="download product and brand images")
+    parser.add_argument("--skip-images", action="store_true", help="do not download images")
     return parser.parse_args()
 
 
-def main() -> int:
-    args = parse_args()
-    out_dir = Path(args.out_dir)
-    started = now_iso()
-
-    category_name, total_pages, items = collect_list(args.category_id, args.workers)
-    print(f"list complete: {len(items)} products across {total_pages} pages", flush=True)
-
-    if args.list_only:
-        products = [
-            merge_product(item, {"title": item["name"], "images": [item["list_image"]], "brand_logos": [], "attributes": {}, "extra_attributes": {}}, args.category_id, category_name)
-            for item in items
-        ]
-    else:
-        products = scrape_details(items, args.category_id, category_name, args.workers)
-
+def build_catalog(products: list[dict[str, Any]], args: argparse.Namespace, category_name: str, total_pages: int, started: str, image_stats: dict[str, Any] | None) -> dict[str, Any]:
     def coverage(field: str) -> int:
         return sum(1 for product in products if product.get(field))
 
@@ -404,6 +504,9 @@ def main() -> int:
                 "production_address",
                 "images",
                 "brand_logos",
+                "list_image_local",
+                "images_local",
+                "brand_logos_local",
             ]
         },
         "top_manufacturers": [
@@ -417,6 +520,65 @@ def main() -> int:
             if name
         ],
     }
+    if image_stats:
+        catalog["images"] = image_stats
+    return catalog
+
+
+def main() -> int:
+    args = parse_args()
+    out_dir = Path(args.out_dir)
+    started = now_iso()
+    should_download_images = args.download_images or (bool(args.from_json) and not args.skip_images)
+
+    if args.from_json:
+        products_path = Path(args.from_json)
+        products = json.loads(products_path.read_text(encoding="utf-8"))
+        existing_catalog = {}
+        catalog_path = products_path.parent / "catalog.json"
+        if catalog_path.exists():
+            existing_catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        category_name = existing_catalog.get("category") or DEFAULT_CATEGORY_NAME
+        total_pages = int(existing_catalog.get("total_pages") or 0)
+        args.category_id = existing_catalog.get("category_id") or args.category_id
+        print(f"loaded {len(products)} products from {products_path}", flush=True)
+    else:
+        category_name, total_pages, items = collect_list(args.category_id, args.workers)
+        print(f"list complete: {len(items)} products across {total_pages} pages", flush=True)
+
+        if args.list_only:
+            products = [
+                merge_product(item, {"title": item["name"], "images": [item["list_image"]], "brand_logos": [], "attributes": {}, "extra_attributes": {}}, args.category_id, category_name)
+                for item in items
+            ]
+        else:
+            products = scrape_details(items, args.category_id, category_name, args.workers)
+        should_download_images = args.download_images and not args.skip_images
+
+    image_stats = None
+    if should_download_images:
+        urls = collect_image_urls(products)
+        print(f"downloading {len(urls)} unique images", flush=True)
+        mapping = download_images(urls, out_dir / "images", args.workers)
+        attach_local_images(products, mapping)
+        ok = sum(1 for item in mapping.values() if item.get("status") in {"ok", "exists"})
+        failed = [item for item in mapping.values() if item.get("status") == "error"]
+        total_bytes = sum(int(item.get("bytes") or 0) for item in mapping.values())
+        image_stats = {
+            "unique_urls": len(urls),
+            "downloaded": ok,
+            "failed": len(failed),
+            "bytes": total_bytes,
+            "directory": "images",
+        }
+        manifest_path = out_dir / "images_manifest.json"
+        manifest_path.write_text(
+            json.dumps(sorted(mapping.values(), key=lambda item: item.get("url") or ""), ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        print(f"images downloaded={ok} failed={len(failed)} bytes={total_bytes}", flush=True)
+
+    catalog = build_catalog(products, args, category_name, total_pages, started, image_stats)
     write_outputs(out_dir, catalog, products)
     print(f"wrote {len(products)} products to {out_dir}", flush=True)
     return 0
