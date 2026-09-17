@@ -1,0 +1,259 @@
+{
+  "source": "https://www.tongrentang.com/jtProductList/d502e93816624e6780a8e959701ec3af/1.html",
+  "site": "https://www.tongrentang.com",
+  "site_name": "中国北京同仁堂（集团）有限责任公司",
+  "section": "同仁堂双龙标产品",
+  "category": "中成药",
+  "category_id": "d502e93816624e6780a8e959701ec3af",
+  "total_pages": 46,
+  "product_count": 733,
+  "unique_product_names": 449,
+  "scraped_at": "2026-09-17T07:16:35Z",
+  "started_at": "2026-09-17T07:16:24Z",
+  "list_only": false,
+  "field_coverage": {
+    "name": 733,
+    "specification": 733,
+    "dosage_form": 733,
+    "marketing_authorization_holder": 732,
+    "indications": 732,
+    "manufacturer": 733,
+    "production_address": 733,
+    "images": 733,
+    "brand_logos": 733,
+    "list_image_local": 733,
+    "images_local": 733,
+    "brand_logos_local": 733
+  },
+  "top_manufacturers": [
+    {
+      "name": "北京同仁堂科技发展股份有限公司制药厂",
+      "count": 298
+    },
+    {
+      "name": "北京同仁堂股份有限公司同仁堂制药厂",
+      "count": 258
+    },
+    {
+      "name": "北京同仁堂天然药物(唐山)有限公司",
+      "count": 63
+    },
+    {
+      "name": "北京同仁堂制药有限公司",
+      "count": 56
+    },
+    {
+      "name": "北京同仁堂科技发展（唐山）有限公司",
+      "count": 21
+    },
+    {
+      "name": "北京同仁堂股份有限公司同仁堂药酒厂",
+      "count": 17
+    },
+    {
+      "name": "北京同仁堂（唐山）营养保健品有限公司",
+      "count": 10
+    },
+    {
+      "name": "北京同仁堂通科药业有限责任公司",
+      "count": 7
+    },
+    {
+      "name": "1.北京同仁堂国药有限公司，2.北京同仁堂股份有限公司",
+      "count": 3
+    }
+  ],
+  "dosage_forms": [
+    {
+      "name": "丸剂（大蜜丸）",
+      "count": 150
+    },
+    {
+      "name": "丸剂（水蜜丸）",
+      "count": 92
+    },
+    {
+      "name": "丸剂（水丸）",
+      "count": 60
+    },
+    {
+      "name": "颗粒剂",
+      "count": 56
+    },
+    {
+      "name": "丸剂(大蜜丸)",
+      "count": 53
+    },
+    {
+      "name": "丸剂(水蜜丸)",
+      "count": 43
+    },
+    {
+      "name": "合剂",
+      "count": 29
+    },
+    {
+      "name": "胶囊剂",
+      "count": 23
+    },
+    {
+      "name": "丸剂(水丸)",
+      "count": 21
+    },
+    {
+      "name": "丸剂(浓缩丸)",
+      "count": 17
+    },
+    {
+      "name": "酒剂",
+      "count": 17
+    },
+    {
+      "name": "煎膏剂（膏滋）",
+      "count": 15
+    },
+    {
+      "name": "散剂",
+      "count": 14
+    },
+    {
+      "name": "片剂",
+      "count": 14
+    },
+    {
+      "name": "片剂（薄膜衣）",
+      "count": 12
+    },
+    {
+      "name": "合剂（口服液）",
+      "count": 11
+    },
+    {
+      "name": "丸剂(糊丸)",
+      "count": 10
+    },
+    {
+      "name": "片剂（素片）",
+      "count": 10
+    },
+    {
+      "name": "胶剂",
+      "count": 10
+    },
+    {
+      "name": "丸剂(浓缩水丸)",
+      "count": 7
+    },
+    {
+      "name": "片剂（薄膜衣片）",
+      "count": 7
+    },
+    {
+      "name": "糖浆剂",
+      "count": 6
+    },
+    {
+      "name": "酊剂",
+      "count": 6
+    },
+    {
+      "name": "胶囊剂（软胶囊）",
+      "count": 6
+    },
+    {
+      "name": "片剂（糖衣片）",
+      "count": 6
+    },
+    {
+      "name": "散剂（内服）",
+      "count": 4
+    },
+    {
+      "name": "片剂(薄膜衣片)",
+      "count": 3
+    },
+    {
+      "name": "大蜜丸",
+      "count": 3
+    },
+    {
+      "name": "丸剂(小蜜丸)",
+      "count": 3
+    },
+    {
+      "name": "片剂(素片)",
+      "count": 2
+    },
+    {
+      "name": "丸剂（浓缩水蜜丸）",
+      "count": 2
+    },
+    {
+      "name": "丸剂（糊丸）",
+      "count": 2
+    },
+    {
+      "name": "散剂（外用）",
+      "count": 2
+    },
+    {
+      "name": "滴丸剂",
+      "count": 2
+    },
+    {
+      "name": "丸剂（浓缩丸）",
+      "count": 2
+    },
+    {
+      "name": "搽剂",
+      "count": 2
+    },
+    {
+      "name": "片剂（糖衣）",
+      "count": 2
+    },
+    {
+      "name": "丸剂",
+      "count": 1
+    },
+    {
+      "name": "煎膏剂",
+      "count": 1
+    },
+    {
+      "name": "丸剂(包糖衣的浓缩水丸)",
+      "count": 1
+    },
+    {
+      "name": "丸剂(浓缩水蜜丸)",
+      "count": 1
+    },
+    {
+      "name": "丸剂(微丸)",
+      "count": 1
+    },
+    {
+      "name": "气雾剂",
+      "count": 1
+    },
+    {
+      "name": "喷雾剂",
+      "count": 1
+    },
+    {
+      "name": "片剂(薄膜衣)",
+      "count": 1
+    },
+    {
+      "name": "片剂(薄膜衣片）",
+      "count": 1
+    }
+  ],
+  "image_download": {
+    "unique_urls": 983,
+    "downloaded": 983,
+    "failed": 0,
+    "bytes": 906982500,
+    "directory": "images"
+  }
+}

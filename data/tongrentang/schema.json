@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TongRenTangProduct",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "detail_url"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "详情页 URL 中的产品 ID"
+    },
+    "name": {
+      "type": "string",
+      "description": "产品名称"
+    },
+    "title": {
+      "type": "string",
+      "description": "详情页标题"
+    },
+    "category": {
+      "type": "string",
+      "description": "品类，如中成药"
+    },
+    "category_id": {
+      "type": "string",
+      "description": "列表页品类 ID"
+    },
+    "specification": {
+      "type": "string",
+      "description": "包装规格"
+    },
+    "dosage_form": {
+      "type": "string",
+      "description": "剂型"
+    },
+    "marketing_authorization_holder": {
+      "type": "string",
+      "description": "药品上市许可持有人"
+    },
+    "indications": {
+      "type": "string",
+      "description": "功能主治"
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "生产企业"
+    },
+    "production_address": {
+      "type": "string",
+      "description": "生产地址"
+    },
+    "health_function": {
+      "type": "string",
+      "description": "保健功能"
+    },
+    "list_image": {
+      "type": "string",
+      "format": "uri"
+    },
+    "list_image_local": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "相对 data/tongrentang 的本地封面图路径"
+    },
+    "detail_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "list_page": {
+      "type": "integer"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "images_local": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "详情图本地路径"
+    },
+    "brand_logos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "brand_logos_local": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "商标图本地路径"
+    },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "详情页原始键值"
+    },
+    "extra_attributes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "未映射到标准字段的属性"
+    }
+  }
+}
