@@ -22,7 +22,7 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
-from urllib.parse import unquote, urljoin, urlparse
+from urllib.parse import quote, unquote, urljoin, urlparse
 
 BASE = "https://www.tongrentang.com"
 DEFAULT_CATEGORY_ID = "d502e93816624e6780a8e959701ec3af"
@@ -110,11 +110,17 @@ def fetch(url: str, retries: int = 5, timeout: int = 30) -> str:
     raise RuntimeError(f"failed to fetch {url}: {last_error}") from last_error
 
 
+def encode_url(url: str) -> str:
+    parsed = urlparse(url)
+    return parsed._replace(path=quote(parsed.path, safe="/-_.~")).geturl()
+
+
 def fetch_bytes(url: str, retries: int = 5, timeout: int = 90) -> tuple[bytes, str]:
     last_error: Exception | None = None
+    encoded = encode_url(url)
     for attempt in range(retries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            req = urllib.request.Request(encoded, headers={"User-Agent": USER_AGENT})
             with urllib.request.urlopen(req, timeout=timeout) as response:
                 content_type = (response.headers.get_content_type() or "").lower()
                 data = response.read()
@@ -128,6 +134,7 @@ def fetch_bytes(url: str, retries: int = 5, timeout: int = 90) -> tuple[bytes, s
 def url_to_image_relpath(url: str) -> str:
     parsed = urlparse(url)
     path = unquote(parsed.path).lstrip("/")
+    path = path.replace(" ", "_")
     if not path:
         digest = sha256(url.encode("utf-8")).hexdigest()[:16]
         path = f"misc/{digest}"
@@ -521,7 +528,7 @@ def build_catalog(products: list[dict[str, Any]], args: argparse.Namespace, cate
         ],
     }
     if image_stats:
-        catalog["images"] = image_stats
+        catalog["image_download"] = image_stats
     return catalog
 
 

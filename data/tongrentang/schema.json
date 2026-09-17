@@ -60,6 +60,13 @@
       "type": "string",
       "format": "uri"
     },
+    "list_image_local": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "相对 data/tongrentang 的本地封面图路径"
+    },
     "detail_url": {
       "type": "string",
       "format": "uri"
@@ -74,12 +81,26 @@
         "format": "uri"
       }
     },
+    "images_local": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "详情图本地路径"
+    },
     "brand_logos": {
       "type": "array",
       "items": {
         "type": "string",
         "format": "uri"
       }
+    },
+    "brand_logos_local": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "商标图本地路径"
     },
     "attributes": {
       "type": "object",

@@ -7,10 +7,10 @@
   "category_id": "d502e93816624e6780a8e959701ec3af",
   "total_pages": 46,
   "product_count": 733,
-  "scraped_at": "2026-09-17T06:54:50Z",
-  "started_at": "2026-09-17T06:53:07Z",
-  "list_only": false,
   "unique_product_names": 449,
+  "scraped_at": "2026-09-17T07:16:35Z",
+  "started_at": "2026-09-17T07:16:24Z",
+  "list_only": false,
   "field_coverage": {
     "name": 733,
     "specification": 733,
@@ -20,7 +20,10 @@
     "manufacturer": 733,
     "production_address": 733,
     "images": 733,
-    "brand_logos": 733
+    "brand_logos": 733,
+    "list_image_local": 733,
+    "images_local": 733,
+    "brand_logos_local": 733
   },
   "top_manufacturers": [
     {
@@ -245,5 +248,12 @@
       "name": "片剂(薄膜衣片）",
       "count": 1
     }
-  ]
+  ],
+  "image_download": {
+    "unique_urls": 983,
+    "downloaded": 983,
+    "failed": 0,
+    "bytes": 906982500,
+    "directory": "images"
+  }
 }
