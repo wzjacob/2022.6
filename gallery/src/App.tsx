@@ -1,34 +1,42 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import catalog from "./catalog.json";
+import WanPage from "./WanPage";
 import { defaultSku, onImageError, productCover, productFrames, skuCover, skuFrames } from "./media";
 import type { Catalog, Product, Sku } from "./types";
 
 const data = catalog as Catalog;
 
+function parseHash() {
+  const hash = decodeURIComponent(window.location.hash.replace(/^#\/?/, ""));
+  const wan = hash === "wan" || hash.startsWith("wan/") || hash.startsWith("wan?");
+  let selectedId: string | null = null;
+  if (hash.startsWith("product/")) {
+    selectedId = hash.slice("product/".length);
+  } else if (hash.startsWith("wan/product/")) {
+    selectedId = hash.slice("wan/product/".length);
+  }
+  return { page: wan ? "wan" : "gallery", selectedId } as const;
+}
+
 function useHashProduct(products: Product[]) {
-  const [selectedId, setSelectedId] = useState<string | null>(() => {
-    const hash = decodeURIComponent(window.location.hash.replace(/^#\/?/, ""));
-    return hash.startsWith("product/") ? hash.slice("product/".length) : null;
-  });
+  const [{ page, selectedId }, setRoute] = useState(parseHash);
 
   useEffect(() => {
-    const onHash = () => {
-      const hash = decodeURIComponent(window.location.hash.replace(/^#\/?/, ""));
-      setSelectedId(hash.startsWith("product/") ? hash.slice("product/".length) : null);
-    };
+    const onHash = () => setRoute(parseHash());
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
   const selected = products.find((product) => product.id === selectedId) ?? null;
   const open = (product: Product) => {
-    window.location.hash = `product/${encodeURIComponent(product.id)}`;
+    const prefix = page === "wan" ? "wan/" : "";
+    window.location.hash = `${prefix}product/${encodeURIComponent(product.id)}`;
   };
   const close = () => {
-    history.replaceState(null, "", window.location.pathname + window.location.search);
-    setSelectedId(null);
+    window.location.hash = page === "wan" ? "wan" : "";
+    setRoute((current) => ({ ...current, selectedId: null }));
   };
-  return { selected, open, close };
+  return { page, selected, open, close };
 }
 
 function CustomCursor({ active }: { active: boolean }) {
@@ -280,7 +288,7 @@ export default function App() {
   const featured = data.products.filter((product) => product.featured).slice(0, 6);
   const [query, setQuery] = useState("");
   const [form, setForm] = useState("全部");
-  const { selected, open, close } = useHashProduct(data.products);
+  const { page, selected, open, close } = useHashProduct(data.products);
 
   const forms = useMemo(() => {
     const bag = new Set<string>();
@@ -298,6 +306,20 @@ export default function App() {
     });
   }, [form, query]);
 
+  if (page === "wan") {
+    return (
+      <>
+        <WanPage
+          products={data.products}
+          featured={data.products.filter((product) => product.featured)}
+          onOpen={open}
+          source={data.source}
+        />
+        {selected ? <ProductDetail key={selected.id} product={selected} onClose={close} /> : null}
+      </>
+    );
+  }
+
   return (
     <div className="page">
       <header className="nav">
@@ -306,6 +328,7 @@ export default function App() {
         </a>
         <nav>
           <a href="#featured">名方</a>
+          <a href="#wan">药丸</a>
           <a href="#catalog">全部药品</a>
           <a href={data.source} target="_blank" rel="noreferrer">
             数据来源
