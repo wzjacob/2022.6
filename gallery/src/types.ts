@@ -9,14 +9,19 @@ export type Sku = {
   id: string;
   listed_name: string;
   specification: string;
+  spec_label: string;
   dosage_form: string;
   indications: string;
   manufacturer: string;
+  manufacturers?: string[];
   marketing_authorization_holder: string;
   production_address: string;
   detail_url: string;
   cover: string;
   cover_local: string | null;
+  cover_optimized?: string;
+  gallery_optimized?: OptimizedImage[];
+  plate_color?: string;
   images: string[];
 };
 

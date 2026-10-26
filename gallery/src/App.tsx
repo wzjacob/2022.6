@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import catalog from "./catalog.json";
-import { onImageError, productCover, productFrames } from "./media";
-import type { Catalog, Product } from "./types";
+import { defaultSku, onImageError, productCover, productFrames, skuCover, skuFrames } from "./media";
+import type { Catalog, Product, Sku } from "./types";
 
 const data = catalog as Catalog;
 
@@ -119,11 +119,30 @@ function FeaturedRow({ products, onOpen }: { products: Product[]; onOpen: (produ
   );
 }
 
+function groupedSkus(product: Product): { form: string; skus: Sku[] }[] {
+  if (product.dosage_forms.length <= 1) {
+    return [{ form: "", skus: product.skus }];
+  }
+  const groups = product.dosage_forms
+    .map((form) => ({ form, skus: product.skus.filter((item) => item.dosage_form === form) }))
+    .filter((group) => group.skus.length > 0);
+  const seen = new Set(groups.flatMap((group) => group.skus.map((item) => item.id)));
+  const rest = product.skus.filter((item) => !seen.has(item.id));
+  if (rest.length > 0) groups.push({ form: "其他", skus: rest });
+  return groups;
+}
+
 function ProductDetail({ product, onClose }: { product: Product; onClose: () => void }) {
-  const frames = productFrames(product);
-  const [frame, setFrame] = useState(frames[0] || productCover(product));
-  const [skuId, setSkuId] = useState(product.skus[0]?.id ?? "");
+  const initial = defaultSku(product);
+  const [skuId, setSkuId] = useState(initial?.id ?? "");
   const sku = product.skus.find((item) => item.id === skuId) ?? product.skus[0];
+  const frames = skuFrames(sku, product);
+  const [frame, setFrame] = useState(frames[0] || skuCover(sku, product));
+
+  useEffect(() => {
+    const next = skuFrames(sku, product);
+    setFrame(next[0] || skuCover(sku, product));
+  }, [skuId, product]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -139,8 +158,8 @@ function ProductDetail({ product, onClose }: { product: Product; onClose: () => 
         <button className="drawer-close" type="button" onClick={onClose}>
           关闭
         </button>
-        <div className="drawer-media" style={{ background: product.plate_color || "#201910" }}>
-          <img src={frame} alt={product.name} onError={onImageError(product.cover, product.cover_local)} />
+        <div className="drawer-media" style={{ background: sku?.plate_color || product.plate_color || "#201910" }}>
+          <img src={frame} alt={`${product.name} ${sku?.spec_label || ""}`} onError={onImageError(sku?.cover || product.cover, sku?.cover_local || product.cover_local)} />
           {frames.length > 1 ? (
             <div className="thumbs">
               {frames.map((item) => (
@@ -177,31 +196,48 @@ function ProductDetail({ product, onClose }: { product: Product; onClose: () => 
           </dl>
 
           <p className="eyebrow">次信息 · 规格层</p>
-          <div className="sku-list">
-            {product.skus.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={`sku-chip${item.id === sku?.id ? " is-on" : ""}`}
-                onClick={() => setSkuId(item.id)}
-              >
-                {item.specification}
-              </button>
+          <div className="sku-groups">
+            {groupedSkus(product).map((group) => (
+              <div key={group.form || "all"} className="sku-group">
+                {group.form ? <p className="sku-group-label">{group.form}</p> : null}
+                <div className="sku-list">
+                  {group.skus.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className={`sku-chip${item.id === sku?.id ? " is-on" : ""}`}
+                      onClick={() => {
+                        setSkuId(item.id);
+                        const next = skuFrames(item, product);
+                        setFrame(next[0] || skuCover(item, product));
+                      }}
+                    >
+                      {item.spec_label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
           {sku ? (
             <dl className="facts secondary">
               <div>
                 <dt>包装规格</dt>
-                <dd>{sku.specification}</dd>
+                <dd>{sku.spec_label}</dd>
               </div>
+              {sku.spec_label !== sku.specification ? (
+                <div>
+                  <dt>原标注</dt>
+                  <dd>{sku.specification}</dd>
+                </div>
+              ) : null}
               <div>
                 <dt>剂型</dt>
                 <dd>{sku.dosage_form}</dd>
               </div>
               <div>
                 <dt>生产企业</dt>
-                <dd>{sku.manufacturer}</dd>
+                <dd>{(sku.manufacturers && sku.manufacturers.length > 0 ? sku.manufacturers : [sku.manufacturer]).join(" / ")}</dd>
               </div>
               {sku.marketing_authorization_holder ? (
                 <div>
@@ -327,7 +363,7 @@ export default function App() {
           </div>
         </section>
       </main>
-      {selected ? <ProductDetail product={selected} onClose={close} /> : null}
+      {selected ? <ProductDetail key={selected.id} product={selected} onClose={close} /> : null}
     </div>
   );
 }

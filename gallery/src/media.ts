@@ -1,5 +1,5 @@
 import type { SyntheticEvent } from "react";
-import type { Product } from "./types";
+import type { Product, Sku } from "./types";
 
 export function mediaSrc(remote: string, local?: string | null, optimized?: string | null): string {
   if (optimized) return optimized;
@@ -21,6 +21,32 @@ export function productFrames(product: Product): string[] {
   }
   const cover = productCover(product);
   return cover ? [cover] : [];
+}
+
+export function skuCover(sku: Sku | undefined, product: Product): string {
+  if (!sku) return productCover(product);
+  return mediaSrc(sku.cover, sku.cover_local, sku.cover_optimized) || productCover(product);
+}
+
+export function skuFrames(sku: Sku | undefined, product: Product): string[] {
+  if (sku?.gallery_optimized && sku.gallery_optimized.length > 0) {
+    return sku.gallery_optimized;
+  }
+  if (sku?.cover_optimized) {
+    return [sku.cover_optimized];
+  }
+  const remotes = [sku?.cover, ...(sku?.images ?? [])].filter((url): url is string => Boolean(url));
+  const unique = Array.from(new Set(remotes));
+  if (unique.length > 0) return unique;
+  return productFrames(product);
+}
+
+export function defaultSku(product: Product): Sku | undefined {
+  const cover = product.cover;
+  return (
+    product.skus.find((item) => item.cover === cover || item.images.includes(cover)) ??
+    product.skus[0]
+  );
 }
 
 export function onImageError(remote: string, local?: string | null) {

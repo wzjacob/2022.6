@@ -226,6 +226,27 @@ def main() -> int:
         product["cover_optimized"] = f"/optimized/{key}/cover.webp"
         product["gallery_optimized"] = gallery_paths
         product["plate_color"] = hex_color(cover_meta["color"])
+        for sku in product.get("skus") or []:
+            sku_urls = []
+            seen: set[str] = set()
+            for url in [sku.get("cover") or "", *(sku.get("images") or [])]:
+                if not url or url in seen:
+                    continue
+                seen.add(url)
+                if url in processed:
+                    sku_urls.append(url)
+            sku_urls.sort(key=lambda url: processed[url]["score"], reverse=True)
+            sku_paths = []
+            for url in sku_urls[:6]:
+                meta = processed[url]
+                digest = hashlib.sha1(url.encode("utf-8")).hexdigest()[:12]
+                rel = Path("sku") / f"{digest}.webp"
+                save_webp(compose_plate(meta["image"], meta["color"]), out_dir / rel)
+                sku_paths.append(f"/optimized/{rel.as_posix()}")
+            sku["cover"] = sku_urls[0] if sku_urls else sku.get("cover") or ""
+            sku["cover_optimized"] = sku_paths[0] if sku_paths else ""
+            sku["gallery_optimized"] = sku_paths
+            sku["plate_color"] = hex_color(processed[sku_urls[0]]["color"]) if sku_urls else product["plate_color"]
         optimized_count += 1
 
     Path(args.input).write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
