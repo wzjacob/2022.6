@@ -29,6 +29,14 @@ function serveLocalImages(req: IncomingMessage, res: ServerResponse, next: Conne
     next();
     return;
   }
+  const head = Buffer.alloc(32);
+  const fd = fs.openSync(file, "r");
+  fs.readSync(fd, head, 0, 32, 0);
+  fs.closeSync(fd);
+  if (head.toString("utf8").startsWith("version https://git-lfs")) {
+    next();
+    return;
+  }
   const ext = path.extname(file).toLowerCase();
   res.setHeader("Content-Type", MIME[ext] || "application/octet-stream");
   res.setHeader("Cache-Control", "public, max-age=86400");

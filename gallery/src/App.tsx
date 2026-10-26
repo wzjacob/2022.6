@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import catalog from "./catalog.json";
-import { mediaSrc } from "./media";
+import { mediaSrc, onImageError } from "./media";
 import type { Catalog, Product } from "./types";
 
 const data = catalog as Catalog;
@@ -66,12 +66,7 @@ function HoverReel({ product, playing }: { product: Product; playing: boolean })
       src={mediaSrc(frame.url, frame.local)}
       alt={product.name}
       className="reel-image"
-      onError={(event) => {
-        const image = event.currentTarget;
-        if (frame.url && image.src !== frame.url) {
-          image.src = frame.url;
-        }
-      }}
+      onError={onImageError(frame.url, frame.local)}
     />
   );
 }
@@ -143,11 +138,7 @@ function ProductDetail({ product, onClose }: { product: Product; onClose: () => 
           <img
             src={mediaSrc(sku?.cover || product.cover, sku?.cover_local || product.cover_local)}
             alt={product.name}
-            onError={(event) => {
-              const image = event.currentTarget;
-              const fallback = sku?.cover || product.cover;
-              if (fallback && image.src !== fallback) image.src = fallback;
-            }}
+            onError={onImageError(sku?.cover || product.cover, sku?.cover_local || product.cover_local)}
           />
         </div>
         <div className="drawer-body">
@@ -307,10 +298,7 @@ export default function App() {
                   src={mediaSrc(product.cover, product.cover_local)}
                   alt={product.name}
                   loading="lazy"
-                  onError={(event) => {
-                    const image = event.currentTarget;
-                    if (product.cover && image.src !== product.cover) image.src = product.cover;
-                  }}
+                  onError={onImageError(product.cover, product.cover_local)}
                 />
                 <div className="grid-copy">
                   <strong>{product.name}</strong>
