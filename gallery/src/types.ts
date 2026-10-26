@@ -3,6 +3,8 @@ export type GalleryImage = {
   local: string;
 };
 
+export type OptimizedImage = string;
+
 export type Sku = {
   id: string;
   listed_name: string;
@@ -34,7 +36,10 @@ export type Product = {
   featured: boolean;
   cover: string;
   cover_local: string;
+  cover_optimized?: string;
   gallery: GalleryImage[];
+  gallery_optimized?: OptimizedImage[];
+  plate_color?: string;
   skus: Sku[];
 };
 

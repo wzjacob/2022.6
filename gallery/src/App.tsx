@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import catalog from "./catalog.json";
-import { mediaSrc, onImageError } from "./media";
+import { onImageError, productCover, productFrames } from "./media";
 import type { Catalog, Product } from "./types";
 
 const data = catalog as Catalog;
@@ -46,7 +46,7 @@ function CustomCursor({ active }: { active: boolean }) {
 }
 
 function HoverReel({ product, playing }: { product: Product; playing: boolean }) {
-  const frames = product.gallery.length > 0 ? product.gallery : [{ url: product.cover, local: product.cover_local }];
+  const frames = productFrames(product);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -56,17 +56,17 @@ function HoverReel({ product, playing }: { product: Product; playing: boolean })
     }
     const timer = window.setInterval(() => {
       setIndex((current) => (current + 1) % frames.length);
-    }, 1100);
+    }, 2600);
     return () => window.clearInterval(timer);
   }, [playing, frames.length]);
 
-  const frame = frames[index];
+  const frame = frames[index] || productCover(product);
   return (
     <img
-      src={mediaSrc(frame.url, frame.local)}
+      src={frame}
       alt={product.name}
       className="reel-image"
-      onError={onImageError(frame.url, frame.local)}
+      onError={onImageError(product.cover, product.cover_local)}
     />
   );
 }
@@ -90,6 +90,7 @@ function FeaturedRow({ products, onOpen }: { products: Product[]; onOpen: (produ
             key={product.id}
             type="button"
             className={`featured-card${isActive ? " is-active" : ""}`}
+            style={{ background: product.plate_color || "#201910" }}
             onMouseEnter={() => {
               setHovering(true);
               setActive(index);
@@ -107,7 +108,9 @@ function FeaturedRow({ products, onOpen }: { products: Product[]; onOpen: (produ
                   {product.sku_count} 个规格 · {product.summary || product.dosage_forms[0]}
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <span className="spine-name">{product.name}</span>
+            )}
           </button>
         );
       })}
@@ -117,6 +120,8 @@ function FeaturedRow({ products, onOpen }: { products: Product[]; onOpen: (produ
 }
 
 function ProductDetail({ product, onClose }: { product: Product; onClose: () => void }) {
+  const frames = productFrames(product);
+  const [frame, setFrame] = useState(frames[0] || productCover(product));
   const [skuId, setSkuId] = useState(product.skus[0]?.id ?? "");
   const sku = product.skus.find((item) => item.id === skuId) ?? product.skus[0];
 
@@ -134,12 +139,22 @@ function ProductDetail({ product, onClose }: { product: Product; onClose: () => 
         <button className="drawer-close" type="button" onClick={onClose}>
           关闭
         </button>
-        <div className="drawer-media">
-          <img
-            src={mediaSrc(sku?.cover || product.cover, sku?.cover_local || product.cover_local)}
-            alt={product.name}
-            onError={onImageError(sku?.cover || product.cover, sku?.cover_local || product.cover_local)}
-          />
+        <div className="drawer-media" style={{ background: product.plate_color || "#201910" }}>
+          <img src={frame} alt={product.name} onError={onImageError(product.cover, product.cover_local)} />
+          {frames.length > 1 ? (
+            <div className="thumbs">
+              {frames.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className={`thumb${item === frame ? " is-on" : ""}`}
+                  onClick={() => setFrame(item)}
+                >
+                  <img src={item} alt="" />
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className="drawer-body">
           <p className="eyebrow">主信息 · 产品层</p>
@@ -226,7 +241,7 @@ function ProductDetail({ product, onClose }: { product: Product; onClose: () => 
 }
 
 export default function App() {
-  const featured = data.products.filter((product) => product.featured);
+  const featured = data.products.filter((product) => product.featured).slice(0, 6);
   const [query, setQuery] = useState("");
   const [form, setForm] = useState("全部");
   const { selected, open, close } = useHashProduct(data.products);
@@ -267,7 +282,7 @@ export default function App() {
           <p className="kicker">{data.section}</p>
           <h1>双龙标中成药</h1>
           <p className="deck">
-            {data.product_count} 个产品 · {data.sku_count} 个包装规格。悬停名方卡片会横向展开并轮播图集，点击查看主次分层信息。
+            {data.product_count} 个产品 · {data.sku_count} 个包装规格。每张图已统一到 4:5 画布并按包装取色垫边，悬停名方卡可展开轮播。
           </p>
         </section>
 
@@ -294,16 +309,18 @@ export default function App() {
           <div className="grid">
             {filtered.map((product) => (
               <button key={product.id} type="button" className="grid-card" onClick={() => open(product)}>
-                <img
-                  src={mediaSrc(product.cover, product.cover_local)}
-                  alt={product.name}
-                  loading="lazy"
-                  onError={onImageError(product.cover, product.cover_local)}
-                />
+                <span className="grid-photo" style={{ background: product.plate_color || "#201910" }}>
+                  <img
+                    src={productCover(product)}
+                    alt={product.name}
+                    loading="lazy"
+                    onError={onImageError(product.cover, product.cover_local)}
+                  />
+                  <em>{product.sku_count} 规格</em>
+                </span>
                 <div className="grid-copy">
                   <strong>{product.name}</strong>
                   <span>{product.summary || product.dosage_forms[0]}</span>
-                  <em>{product.sku_count} 规格</em>
                 </div>
               </button>
             ))}
