@@ -1,0 +1,277 @@
+.wan-shell {
+  --wan-bg: #000;
+  --wan-ink: #f5f5f5;
+  --wan-muted: #8a8a8a;
+  --wan-line: rgba(255, 255, 255, 0.12);
+  --wan-pill: #fff;
+  --wan-pill-ink: #111;
+  min-height: 100vh;
+  background: var(--wan-bg);
+  color: var(--wan-ink);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+}
+
+.wan-shell[data-theme="light"] {
+  --wan-bg: #f4f4f5;
+  --wan-ink: #111;
+  --wan-muted: #6b6b6b;
+  --wan-line: rgba(0, 0, 0, 0.1);
+  --wan-pill: #111;
+  --wan-pill-ink: #fff;
+}
+
+.wan-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 40px 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.wan-nav nav {
+  display: flex;
+  gap: 22px;
+  color: var(--wan-muted);
+}
+
+.wan-nav a.is-on {
+  color: var(--wan-ink);
+}
+
+.wan-toggle {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--wan-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--wan-ink);
+  cursor: pointer;
+}
+
+.wan-hero {
+  text-align: center;
+  padding: 36px 24px 8px;
+}
+
+.wan-hero h1 {
+  margin: 0 0 32px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: clamp(44px, 7vw, 80px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.wan-kicker {
+  display: none;
+}
+
+.brand-orb {
+  width: 148px;
+  height: 148px;
+  margin: 0 auto 40px;
+  border: 0;
+  padding: 0;
+  border-radius: 28px;
+  background: #f4f4f5;
+  color: #111;
+  font-family: "Noto Serif SC", serif;
+  font-size: 52px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.wan-shell[data-theme="light"] .brand-orb {
+  background: #111;
+  color: #fff;
+}
+
+.brand-orb .core,
+.brand-orb .shell {
+  display: none;
+}
+
+.wan-deck {
+  display: none;
+}
+
+.form-tray,
+.pill-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 8px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 24px 20px;
+}
+
+.form-tray {
+  padding-top: 8px;
+  padding-bottom: 14px;
+}
+
+.pill-wan {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 7px 14px 7px 10px;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  background: var(--wan-pill);
+  color: var(--wan-pill-ink);
+  box-shadow: none;
+  transform: none;
+}
+
+.pill-wan::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex: 0 0 14px;
+  background: var(--dot, #c45a4a);
+}
+
+.pill-wan small {
+  display: none;
+}
+
+.pill-wan.is-featured {
+  font-weight: 600;
+}
+
+.pill-wan:hover,
+.pill-wan:focus-visible {
+  transform: none;
+  filter: none;
+  z-index: 2;
+  opacity: 0.86;
+}
+
+.pill-wan.is-on {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.wan-shell[data-theme="light"] .pill-wan.is-on {
+  outline-color: #111;
+}
+
+.pill-wan.honey { --dot: #d4a017; }
+.pill-wan.water { --dot: #c47a2a; }
+.pill-wan.dense { --dot: #4a3728; }
+.pill-wan.capsule { --dot: #d24b3c; }
+.pill-wan.tablet { --dot: #c9b48a; }
+.pill-wan.granule { --dot: #e0b85a; }
+.pill-wan.liquid { --dot: #e07a20; }
+.pill-wan.paste { --dot: #2a211c; }
+.pill-wan.wax { --dot: #c13224; }
+
+.wan-about,
+.wan-works {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 40px 40px;
+}
+
+.wan-about h2,
+.wan-works h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.wan-about p {
+  color: var(--wan-muted);
+  line-height: 1.7;
+  max-width: 640px;
+}
+
+.wan-legend {
+  display: none;
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.work-card {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.work-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  border-radius: 22px;
+  display: block;
+}
+
+.work-card strong {
+  display: block;
+  margin-top: 10px;
+}
+
+.work-card em {
+  color: var(--wan-muted);
+  font-style: normal;
+  font-size: 13px;
+}
+
+.wan-foot {
+  padding: 24px 40px 48px;
+  color: var(--wan-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.pill-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  min-width: 160px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #111;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.pill-wan:hover .pill-tip,
+.pill-wan:focus-visible .pill-tip {
+  opacity: 1;
+}
+
+@media (max-width: 980px) {
+  .wan-nav,
+  .wan-about,
+  .wan-works {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
