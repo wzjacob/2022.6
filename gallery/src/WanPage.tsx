@@ -34,17 +34,6 @@ const FORM_KIND: Record<string, string> = {
   胶剂: "paste",
 };
 
-const LEGEND = [
-  ["honey", "大蜜丸"],
-  ["wax", "蜡壳"],
-  ["water", "水蜜丸"],
-  ["dense", "浓缩丸 / 水丸"],
-  ["capsule", "胶囊"],
-  ["tablet", "片剂"],
-  ["granule", "颗粒 / 散"],
-  ["liquid", "酒 / 液"],
-];
-
 function pillKind(product: Product): string {
   if (product.name.includes("安宫") || product.skus.some((sku) => sku.spec_label.includes("蜡壳"))) {
     return "wax";
@@ -113,16 +102,10 @@ export default function WanPage({
       </header>
 
       <section className="wan-hero">
-        <p className="wan-kicker">双龙标 · 药丸柜</p>
         <h1>同仁堂</h1>
         <button type="button" className="brand-orb" onClick={() => featured[0] && onOpen(featured[0])} aria-label="打开安宫牛黄丸">
-          <span className="core">同</span>
-          <span className="shell shell-left" />
-          <span className="shell shell-right" />
+          同
         </button>
-        <p className="wan-deck">
-          原模版用扁平胶囊标签陈列技能。这里改成可开合的蜡壳，并用蜜丸、水丸、浓缩丸、片剂的真实剂型材质，承载 442 个品种。悬停可开壳看主治，点击进入该品。
-        </p>
       </section>
 
       <div className="form-tray" role="tablist" aria-label="按剂型筛选">
@@ -171,18 +154,8 @@ export default function WanPage({
       </div>
 
       <section className="wan-about">
-        <h2>从胶囊标签到一粒药</h2>
-        <p>
-          作品集模版把技能做成白胶囊 chip。中成药的「胶囊」本来就是剂型：大蜜丸是金黄蜡光，水蜜丸更小更密，浓缩丸近墨，安宫等名方用朱红蜡壳。点开中间蜡壳，里面是蜜丸芯；点一粒药丸，进入该品种详情与品规图。
-        </p>
-        <div className="wan-legend">
-          {LEGEND.map(([kind, label]) => (
-            <span key={kind}>
-              <i className={`pill-wan ${kind}`} />
-              {label}
-            </span>
-          ))}
-        </div>
+        <h2>按剂型点开</h2>
+        <p>白胶囊是目录，左边圆点区分剂型。点一粒进该品种，点上面的剂型胶囊可以筛选。</p>
       </section>
 
       <section className="wan-works">
